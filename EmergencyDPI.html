@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07111f">
+  <title>EmergencyDPI — Portable Emergency Health Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --bg:#07111f;--bg2:#0a1627;--panel:#0e1c2e;--panel2:#12243a;
+ --text:#edf5ff;--muted:#93a8bd;--line:rgba(173,204,231,.13);
+ --cyan:#56d9ff;--cyan2:#20b9ef;--green:#57e39b;--red:#ff6f7e;
+ --shadow:0 24px 80px rgba(0,0,0,.28);--radius:22px
+}
+html{scroll-behavior:smooth}
+body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);line-height:1.55;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 75% 10%,rgba(38,174,232,.10),transparent 28%),radial-gradient(circle at 5% 55%,rgba(50,110,200,.07),transparent 25%);z-index:-1}
+h1,h2,h3,.brand{font-family:Manrope,sans-serif}
+a{text-decoration:none;color:inherit}
+button{font:inherit;border:0;cursor:pointer}
+.navbar{height:76px;padding:0 clamp(20px,5vw,76px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:rgba(7,17,31,.76);backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}
+.brand{font-weight:800;font-size:20px;display:flex;align-items:center;gap:9px}.brand>span:last-child>span{color:var(--cyan)}
+.brand-mark{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(86,217,255,.13);color:var(--cyan);border:1px solid rgba(86,217,255,.3)}
+.navbar nav{display:flex;align-items:center;gap:30px;font-size:14px;color:#b8c9d9}.navbar nav a:hover{color:white}
+.nav-cta{padding:10px 16px;border-radius:10px;background:#eaf7ff;color:#07111f;font-weight:700}.nav-cta span{margin-left:8px}
+.menu-btn{display:none;background:none;color:white;font-size:22px}
+.hero{max-width:1250px;margin:auto;min-height:700px;padding:95px 30px 80px;display:grid;grid-template-columns:1.02fr .98fr;align-items:center;gap:55px}
+.eyebrow{font-size:11px;letter-spacing:1.6px;color:#75c9e8;font-weight:800;margin-bottom:18px}.pulse{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 0 5px rgba(87,227,155,.08);margin-right:9px}
+.hero h1{font-size:clamp(42px,5.2vw,72px);line-height:1.04;letter-spacing:-2.7px}.hero h1 em,.section-heading h2 em,.unconscious h2 em,.impact h2 em,.final-cta h2 em{font-style:normal;color:var(--cyan)}
+.hero-sub{max-width:650px;color:var(--muted);font-size:17px;margin:25px 0 31px;line-height:1.7}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}.btn{padding:13px 19px;border-radius:12px;font-weight:700;font-size:14px;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:10px}.btn-primary{background:var(--cyan);color:#06111c;box-shadow:0 8px 30px rgba(86,217,255,.17)}.btn-primary:hover{transform:translateY(-2px);filter:brightness(1.06)}.btn-ghost{background:rgba(255,255,255,.035);color:white;border:1px solid var(--line)}.btn-ghost:hover{background:rgba(255,255,255,.07)}.btn-danger{background:rgba(255,111,126,.1);color:#ff9da8;border:1px solid rgba(255,111,126,.25)}
+.trust-strip{display:flex;gap:0;margin-top:45px;border-top:1px solid var(--line);padding-top:20px}.trust-strip>div{padding-right:26px;margin-right:26px;border-right:1px solid var(--line)}.trust-strip>div:last-child{border:0}.trust-strip b,.trust-strip span{display:block}.trust-strip b{font-size:12px}.trust-strip span{font-size:10px;color:#71869b;margin-top:3px}
+.hero-visual{position:relative;min-height:520px;display:grid;place-items:center}.glow{position:absolute;width:390px;height:390px;border-radius:50%;background:rgba(50,191,238,.12);filter:blur(70px)}
+.glass{background:linear-gradient(145deg,rgba(19,40,61,.92),rgba(8,22,37,.95));border:1px solid rgba(158,208,235,.18);box-shadow:var(--shadow);backdrop-filter:blur(15px)}
+.profile-card{width:min(430px,100%);border-radius:26px;padding:24px;position:relative;z-index:2;transform:rotate(1deg)}.profile-top{display:flex;justify-content:space-between;color:#6f879e;font-size:9px;letter-spacing:1.5px;font-weight:800}.live{color:var(--green)}.live i{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:5px}
+.profile-person{display:flex;align-items:center;gap:14px;margin:25px 0}.avatar{width:54px;height:54px;border-radius:17px;background:linear-gradient(135deg,#4dd3f5,#3466b8);display:grid;place-items:center;font-weight:800;font-size:17px}.profile-person h3{font-size:18px}.profile-person p,.qr-area p{color:#7d92a8;font-size:11px}.verified{margin-left:auto;background:rgba(87,227,155,.1);color:var(--green);width:25px;height:25px;border-radius:50%;display:grid;place-items:center}
+.critical-card{background:rgba(0,0,0,.16);border:1px solid var(--line);border-radius:16px;padding:16px}.mini-title{font-size:10px;color:#9bb0c3;font-weight:800;margin-bottom:11px}.mini-title span{color:#ffbf59}.info-row{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:12px}.info-row span{color:#8196aa}.info-row b{font-size:11px}
+.qr-area{display:flex;gap:14px;align-items:center;padding-top:18px}.qr-box,.big-qr{background:white;border-radius:10px;display:grid;place-items:center}.qr-box{width:64px;height:64px}.big-qr{width:170px;height:170px;margin:18px auto}.qr-fake{width:44px;height:44px;background:repeating-conic-gradient(#101820 0 25%,white 0 50%) 50%/9px 9px;position:relative}.qr-fake:before,.qr-fake:after{content:"";position:absolute;background:#101820}.qr-fake:before{width:15px;height:15px;left:-1px;top:-1px;border:4px solid white;outline:5px solid #101820}.qr-fake:after{width:12px;height:12px;right:-1px;bottom:-1px;border:4px solid white;outline:4px solid #101820}.qr-fake.large{width:112px;height:112px;background-size:17px 17px}
+.floating-note{position:absolute;z-index:3;background:rgba(13,29,47,.94);border:1px solid var(--line);padding:12px 14px;border-radius:14px;display:flex;gap:10px;align-items:center;box-shadow:0 15px 40px rgba(0,0,0,.2)}.floating-note span{font-size:18px}.floating-note b,.floating-note small{display:block}.floating-note b{font-size:11px}.floating-note small{font-size:9px;color:#71879d}.note-one{left:0;top:17%}.note-two{right:-5%;bottom:17%}
+.section{max-width:1180px;margin:auto;padding:105px 30px}.section-heading{max-width:730px}.section-heading.compact{max-width:700px}.section-heading h2{font-size:clamp(32px,4vw,49px);line-height:1.1;letter-spacing:-1.7px}.section-heading p{color:var(--muted);margin-top:18px;max-width:650px;font-size:15px}
+.problem-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:45px}.problem-card{background:rgba(255,255,255,.025);border:1px solid var(--line);padding:28px;border-radius:18px}.problem-icon,.feature-icon{width:43px;height:43px;border-radius:12px;background:rgba(86,217,255,.08);display:grid;place-items:center;margin-bottom:22px;font-size:20px}.problem-card h3,.feature-grid h3{font-size:17px}.problem-card p,.feature-grid p{color:#8195aa;font-size:13px;margin-top:8px;line-height:1.7}.big-statement{margin-top:55px;padding:29px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font:600 clamp(20px,2.4vw,28px) Manrope;letter-spacing:-.5px}.big-statement span{color:var(--cyan)}
+.landscape{padding-top:70px}.spectrum{margin:45px 0 28px;display:grid;grid-template-columns:1fr 1.25fr 1fr;align-items:stretch}.spectrum-side{padding:30px;background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:18px 0 0 18px}.spectrum-side.right{border-radius:0 18px 18px 0;text-align:right}.spectrum-side span{font-size:10px;color:#70869c;letter-spacing:1px}.spectrum-side b,.spectrum-side small{display:block}.spectrum-side b{margin:9px 0;color:#d5e2ed}.spectrum-side small{font-size:11px;color:#71869a}.spectrum-center{margin:-8px 0;padding:36px 25px;background:linear-gradient(135deg,rgba(52,205,245,.14),rgba(49,93,172,.12));border:1px solid rgba(86,217,255,.3);border-radius:18px;z-index:2;text-align:center;box-shadow:0 10px 40px rgba(36,180,230,.08)}.spectrum-center div{font:800 22px Manrope;color:var(--cyan)}.spectrum-center span{display:block;font-size:11px;color:#a9c2d4;margin-top:6px}.positioning{color:#93a8ba;font-size:14px;line-height:1.8;max-width:850px}.positioning strong{color:#e9f4fc}
+.how{background:linear-gradient(180deg,transparent,rgba(255,255,255,.012),transparent)}.flow{position:relative;display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:58px}.flow-line{position:absolute;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);left:8%;right:8%;top:34px;opacity:.45}.flow-step{text-align:center;position:relative}.flow-step>span{position:absolute;top:-7px;left:calc(50% + 17px);font-size:9px;color:#688198}.flow-icon{width:68px;height:68px;border-radius:19px;margin:0 auto 18px;display:grid;place-items:center;background:#0c2032;border:1px solid rgba(86,217,255,.23);font-size:23px;color:var(--cyan);position:relative;z-index:1}.flow-step h3{font-size:13px}.flow-step p{font-size:10px;color:#73899e;max-width:125px;margin:5px auto}.core-rule{margin-top:52px;text-align:center;padding:19px;background:rgba(86,217,255,.045);border:1px solid rgba(86,217,255,.14);border-radius:14px;color:#a8bfd0;font-size:12px}.core-rule span{font-size:9px;letter-spacing:1.3px;color:#5d8299;margin-right:16px}.core-rule b{color:#eaf7ff;margin:0 4px}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:45px}.feature-grid article{padding:25px;background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:18px}.feature-icon{margin-bottom:17px}
+.demo-section{max-width:1250px;margin:20px auto 110px;padding:60px 30px}.demo-section:before{content:"";position:absolute;left:0;right:0;height:700px;background:linear-gradient(180deg,rgba(9,28,46,.8),transparent);z-index:-1}.demo-header{display:flex;justify-content:space-between;align-items:end;margin-bottom:28px}.demo-header h2{font:800 clamp(28px,3.5vw,42px) Manrope;letter-spacing:-1.5px}.demo-header p{color:var(--muted);font-size:13px;margin-top:6px}.reset-btn{background:none;color:#7890a5;font-size:12px}.reset-btn:hover{color:white}
+.demo-shell{display:grid;grid-template-columns:220px 1fr;border:1px solid var(--line);border-radius:24px;overflow:hidden;background:#091523;box-shadow:var(--shadow);min-height:610px}.demo-nav{background:#0b1928;border-right:1px solid var(--line);padding:22px 15px;display:flex;flex-direction:column}.demo-user{display:flex;align-items:center;gap:10px;padding:10px 8px 22px;border-bottom:1px solid var(--line);margin-bottom:16px}.avatar.small{width:38px;height:38px;border-radius:11px;font-size:12px}.demo-user b,.demo-user small{display:block}.demo-user b{font-size:12px}.demo-user small{font-size:9px;color:#72889d}.tab{width:100%;text-align:left;padding:12px;border-radius:10px;background:none;color:#7890a4;font-size:12px;margin-bottom:4px}.tab:hover,.tab.active{background:rgba(86,217,255,.08);color:#eaf8ff}.demo-nav-foot{margin-top:auto;border-top:1px solid var(--line);padding:15px 7px;font-size:9px;color:#668096}.dot{width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;margin-right:5px}.demo-content{padding:35px;min-width:0}.demo-view{display:none}.demo-view.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:.3;transform:translateY(5px)}to{opacity:1;transform:none}}
+.view-top{display:flex;justify-content:space-between;align-items:start;margin-bottom:28px}.view-kicker{font-size:9px;letter-spacing:1.3px;color:#6e94ad;font-weight:800}.view-top h3{font-size:26px;margin-top:5px}.view-top p{color:#71869b;font-size:12px;margin-top:3px}.profile-pill,.verified-pill,.pending-pill,.active-access{font-size:9px;letter-spacing:.6px;padding:8px 10px;border-radius:20px}.profile-pill{background:rgba(87,227,155,.08);color:var(--green)}.verified-pill{background:rgba(86,217,255,.08);color:var(--cyan)}.pending-pill{background:rgba(255,190,89,.08);color:#ffca78}.active-access{background:rgba(87,227,155,.08);color:var(--green)}
+.patient-layout{display:grid;grid-template-columns:1.5fr .8fr;gap:15px}.data-card,.qr-panel,.hospital-card,.consent-card,.record-card{background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:17px}.data-card-head{display:flex;justify-content:space-between;padding:18px;border-bottom:1px solid var(--line);font-size:12px}.data-card-head span{color:#668198;font-size:9px}.data-item{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line);cursor:default}.data-item:last-child{border:0}.data-item>span{display:flex;align-items:center;gap:12px}.data-item i{font-style:normal;width:30px;height:30px;display:grid;place-items:center;background:rgba(86,217,255,.06);border-radius:9px}.data-item b,.data-item small{display:block}.data-item b{font-size:11px}.data-item small{font-size:9px;color:#6e8296;margin-top:2px}.data-item>strong{font-size:11px;color:#c8d9e6}.qr-panel{text-align:center;padding:24px}.secure-label{font-size:8px;letter-spacing:1.3px;color:#69849a}.qr-panel>b{font-size:13px}.qr-panel>p{font-size:10px;color:#71879b;line-height:1.6;margin:8px 0 17px}.full{width:100%}
+.hospital-card{padding:22px}.hospital-identity{display:flex;align-items:center;gap:12px;padding-bottom:22px;border-bottom:1px solid var(--line);margin-bottom:22px}.hospital-logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(86,217,255,.12);color:var(--cyan);font-size:24px}.hospital-identity b,.hospital-identity small{display:block}.hospital-identity b{font-size:13px}.hospital-identity small{font-size:10px;color:#71879b}.hospital-identity>span{margin-left:auto;font-size:8px;color:var(--green);border:1px solid rgba(87,227,155,.2);padding:5px 7px;border-radius:5px}.request-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}.field-label{font-size:9px;letter-spacing:1px;color:#6d8499;font-weight:800;margin-bottom:8px}.request-grid select{width:100%;background:#0a1827;color:#dceaf4;border:1px solid var(--line);padding:11px;border-radius:9px;font-size:11px;outline:none}.check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:18px}.check-grid label{border:1px solid var(--line);background:rgba(255,255,255,.02);padding:12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:7px}.check-grid input{accent-color:var(--cyan)}.request-warning{font-size:10px;color:#8ba0b2;padding:12px;background:rgba(86,217,255,.04);border:1px solid rgba(86,217,255,.1);border-radius:9px;margin-bottom:15px}
+.consent-card{max-width:590px;margin:auto;padding:23px}.consent-hospital{display:flex;align-items:center;gap:11px;padding-bottom:19px;border-bottom:1px solid var(--line)}.consent-hospital b,.consent-hospital small{display:block}.consent-hospital b{font-size:13px}.consent-hospital small{font-size:9px;color:#72889c}.consent-hospital>span{margin-left:auto;color:var(--green);font-size:9px}.purpose-box{padding:15px 0;border-bottom:1px solid var(--line)}.purpose-box small,.purpose-box b{display:block}.purpose-box small{font-size:8px;letter-spacing:1px;color:#6d8499}.purpose-box b{font-size:12px;margin-top:3px}.requested-title{font-size:11px;font-weight:800;margin:19px 0 9px}.requested-title span{float:right;color:#698399;font-size:9px;font-weight:500}.requested-list div{display:flex;gap:9px;align-items:center;padding:10px;border-bottom:1px solid var(--line);font-size:11px}.requested-list b{margin-left:auto;color:#72dca4;font-size:8px}.expiry{display:flex;gap:10px;padding:14px;background:rgba(255,190,89,.045);border:1px solid rgba(255,190,89,.12);border-radius:10px;margin-top:17px}.expiry>span{font-size:17px}.expiry b,.expiry small{display:block}.expiry b{font-size:10px}.expiry small{font-size:9px;color:#7b8f9f;margin-top:2px}.consent-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}.consent-actions .btn{width:100%}
+.record-card{max-width:650px;margin:auto;padding:22px}.active-access-banner{display:flex;align-items:center;gap:13px;background:rgba(87,227,155,.055);border:1px solid rgba(87,227,155,.15);padding:15px;border-radius:12px;margin-bottom:18px}.timer-ring{width:45px;height:45px;border-radius:50%;border:2px solid var(--green);display:grid;place-items:center;color:var(--green);font-weight:800;font-size:12px}.active-access-banner b,.active-access-banner p{display:block}.active-access-banner b{font-size:12px}.active-access-banner p{font-size:9px;color:#7890a3}.active-access-banner>#timerLabel{margin-left:auto;font:700 14px Manrope;color:var(--green)}.record-row{display:flex;justify-content:space-between;padding:13px 4px;border-bottom:1px solid var(--line);font-size:11px}.record-row span{color:#6e8498}.record-row b{max-width:60%;text-align:right}.green{color:var(--green)}.record-note{padding:13px 0;color:#7890a3;font-size:9px}
+.unconscious{background:#0b1928;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:90px max(30px,calc((100% - 1180px)/2));display:grid;grid-template-columns:.8fr 1.2fr;gap:80px;align-items:center}.unconscious h2,.impact h2,.final-cta h2{font:800 clamp(30px,4vw,46px) Manrope;line-height:1.1;letter-spacing:-1.5px}.unconscious p{font-size:13px;color:#8095a9;margin-top:18px;line-height:1.7}.unconscious-flow{display:flex;flex-direction:column;gap:8px}.unconscious-flow span{padding:15px 18px;background:rgba(255,255,255,.025);border:1px solid var(--line);border-radius:11px;font-size:11px}.unconscious-flow span:last-child{border-color:rgba(86,217,255,.22);color:var(--cyan)}.unconscious-flow i{text-align:center;color:#58778d;font-style:normal}
+.architecture-grid{max-width:700px;margin:50px auto 25px;text-align:center}.arch-box{padding:14px;background:#0d2033;border:1px solid var(--line);border-radius:10px;font-size:10px;letter-spacing:.7px;color:#b7cbd9}.arch-box.top,.arch-box.backend{border-color:rgba(86,217,255,.25);color:var(--cyan)}.arch-box.api{max-width:280px;margin:auto}.arch-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.arch-row .arch-box{font-size:9px}.arch-row .arch-box:nth-child(2){border-color:rgba(87,227,155,.18)}.arrow{color:#4e7087;padding:6px}.arch-box.hospital{margin:14px auto 0;max-width:350px}.stack-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.stack-row span{font-size:9px;color:#7590a4;padding:7px 10px;border:1px solid var(--line);border-radius:20px}
+.dpi-table{margin-top:45px;border:1px solid var(--line);border-radius:17px;overflow:hidden}.dpi-table>div{display:grid;grid-template-columns:.65fr 1.35fr;padding:15px 20px;border-bottom:1px solid var(--line);font-size:11px}.dpi-table>div:last-child{border:0}.dpi-table .dpi-head{background:rgba(255,255,255,.035);font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#71879a;font-weight:800}.dpi-table div span{color:#7890a5}.dpi-table b{font-weight:600}
+.impact{padding:100px 30px;background:linear-gradient(135deg,#0b1d30,#091522)}.impact-inner{max-width:1180px;margin:auto}.scale{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:45px 0 24px}.scale span{padding:11px 13px;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:9px;font-size:10px}.scale b{color:#4c718a}.future-tags{display:flex;gap:8px;flex-wrap:wrap}.future-tags span{font-size:9px;color:#7590a5;padding:7px 10px;background:rgba(86,217,255,.045);border:1px solid rgba(86,217,255,.1);border-radius:20px}
+.final-cta{text-align:center;padding:120px 30px}.final-cta .eyebrow{margin-bottom:22px}.final-cta h2{max-width:800px;margin:auto}.principles{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:30px auto 28px}.principles span{font-size:10px;color:#8ea6b8;padding:8px 12px;border:1px solid var(--line);border-radius:20px}
+footer{border-top:1px solid var(--line);padding:28px max(30px,calc((100% - 1180px)/2));display:flex;justify-content:space-between;align-items:center;color:#61788d}footer .brand{font-size:15px}footer .brand-mark{width:26px;height:26px;font-size:13px}footer p{font-size:9px}
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(7px);z-index:50;place-items:center;padding:20px}.modal-backdrop.show{display:grid}.modal{width:min(450px,100%);background:#0d1d2f;border:1px solid var(--line);border-radius:22px;padding:30px;position:relative;box-shadow:var(--shadow)}.modal-close{position:absolute;right:15px;top:12px;background:none;color:#8da3b5;font-size:25px}.modal-icon{width:48px;height:48px;border-radius:14px;background:rgba(86,217,255,.1);display:grid;place-items:center;margin-bottom:18px}.modal h2{font:800 25px Manrope}.modal p{font-size:12px;color:#8298aa;margin:9px 0 22px}
+.toast{position:fixed;right:22px;bottom:22px;background:#eaf8ff;color:#07111f;padding:12px 16px;border-radius:11px;font-size:11px;font-weight:700;z-index:100;opacity:0;transform:translateY(10px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}
+@media(max-width:900px){.hero{grid-template-columns:1fr;padding-top:65px}.hero-visual{min-height:470px}.note-one{left:2%}.note-two{right:0}.problem-grid,.feature-grid{grid-template-columns:1fr 1fr}.flow{grid-template-columns:repeat(3,1fr);row-gap:35px}.flow-line{display:none}.unconscious{grid-template-columns:1fr;gap:45px}.demo-shell{grid-template-columns:1fr}.demo-nav{border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:center;gap:5px;overflow:auto}.demo-user{border:0;margin:0;padding:5px 12px 5px 4px}.demo-nav-foot{display:none}.tab{width:auto;white-space:nowrap}.tab.active{background:rgba(86,217,255,.08)}}
+@media(max-width:650px){.navbar nav{display:none}.menu-btn{display:block}.hero{padding-left:20px;padding-right:20px}.hero h1{letter-spacing:-1.7px}.trust-strip{display:block}.trust-strip>div{border:0;border-bottom:1px solid var(--line);padding:9px 0;margin:0}.hero-visual{min-height:410px}.profile-card{padding:18px}.note-one,.note-two{display:none}.section{padding:75px 20px}.problem-grid,.feature-grid{grid-template-columns:1fr}.spectrum{grid-template-columns:1fr}.spectrum-side,.spectrum-side.right{border-radius:15px}.spectrum-center{margin:10px 0}.flow{grid-template-columns:repeat(2,1fr)}.demo-section{padding:45px 15px;margin-bottom:50px}.demo-header{align-items:start;gap:15px}.demo-content{padding:22px 15px}.patient-layout{grid-template-columns:1fr}.request-grid,.check-grid{grid-template-columns:1fr}.view-top{display:block}.view-top>span{display:inline-block;margin-top:13px}.unconscious{padding:75px 20px}.architecture{padding-top:70px}.arch-row{grid-template-columns:1fr}.dpi-table>div{grid-template-columns:.7fr 1.3fr}.impact{padding:75px 20px}.scale{gap:7px}.scale b{display:none}.final-cta{padding:90px 20px}footer{display:block;padding:25px 20px}footer p{margin-top:10px}}
+
+</style>
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+
+  <header class="navbar">
+    <a class="brand" href="#home" aria-label="EmergencyDPI home">
+      <span class="brand-mark">✚</span>
+      <span>Emergency<span>DPI</span></span>
+    </a>
+    <nav>
+      <a href="#problem">Problem</a>
+      <a href="#how">How it works</a>
+      <a href="#security">Security</a>
+      <button class="nav-cta" onclick="openHospital()">Hospital Access <span>↗</span></button>
+    </nav>
+    <button class="menu-btn" onclick="toggleMenu()" aria-label="Open menu">☰</button>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pulse"></span> Emergency health access • consent-driven</div>
+        <h1>Critical information,<br><em>when every second matters.</em></h1>
+        <p class="hero-sub">
+          EmergencyDPI is an emergency-focused access layer that lets verified healthcare providers
+          request only the critical information they need — with consent, time limits and a complete audit trail.
+        </p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="showPatient()">Open Patient Profile <span>→</span></button>
+          <button class="btn btn-ghost" onclick="openHospital()">Simulate Hospital Access</button>
+        </div>
+        <div class="trust-strip">
+          <div><b>Consent-controlled</b><span>Patient / authorized person</span></div>
+          <div><b>Minimum necessary</b><span>Only requested fields</span></div>
+          <div><b>Time-limited</b><span>Access automatically expires</span></div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="glow"></div>
+        <div class="profile-card glass">
+          <div class="profile-top"><span>EMERGENCY PROFILE</span><span class="live"><i></i> ACTIVE</span></div>
+          <div class="profile-person">
+            <div class="avatar">AS</div>
+            <div><h3>Alex Sharma</h3><p>Emergency Health Profile</p></div>
+            <span class="verified">✓</span>
+          </div>
+          <div class="critical-card">
+            <div class="mini-title"><span>⚠</span> Critical information</div>
+            <div class="info-row"><span>Blood group</span><b>B+</b></div>
+            <div class="info-row"><span>Critical allergy</span><b>Penicillin</b></div>
+            <div class="info-row"><span>Current medication</span><b>2 active</b></div>
+            <div class="info-row"><span>Emergency contact</span><b>Available</b></div>
+          </div>
+          <div class="qr-area">
+            <div class="qr-box" id="heroQr"><div class="qr-fake"></div></div>
+            <div><b>Secure profile QR</b><p>Contains a profile reference — <strong>not medical data.</strong></p></div>
+          </div>
+        </div>
+        <div class="floating-note note-one"><span>🔐</span><div><b>Consent required</b><small>Before data release</small></div></div>
+        <div class="floating-note note-two"><span>⏱</span><div><b>30 min access</b><small>Automatically expires</small></div></div>
+      </div>
+    </section>
+
+    <section class="section problem" id="problem">
+      <div class="section-heading">
+        <div class="eyebrow">01 • THE PROBLEM</div>
+        <h2>In an emergency, <em>information can disappear.</em></h2>
+        <p>When a patient cannot speak, doctors may need a few critical facts immediately — without opening an entire medical record.</p>
+      </div>
+      <div class="problem-grid">
+        <article class="problem-card"><span class="problem-icon">⏱</span><h3>Time critical</h3><p>Emergency decisions can depend on information that is not immediately available.</p></article>
+        <article class="problem-card"><span class="problem-icon">🔒</span><h3>Privacy sensitive</h3><p>A complete medical record can reveal far more information than an emergency team needs.</p></article>
+        <article class="problem-card"><span class="problem-icon">📍</span><h3>Unfamiliar hospital</h3><p>Patients may arrive at a provider that has no existing relationship with them.</p></article>
+      </div>
+      <div class="big-statement">Emergency care needs <span>the right information</span> — not the entire medical record.</div>
+    </section>
+
+    <section class="section landscape">
+      <div class="section-heading compact">
+        <div class="eyebrow">02 • THE GAP</div>
+        <h2>Between <em>too much</em> and <em>too little.</em></h2>
+      </div>
+      <div class="spectrum">
+        <div class="spectrum-side"><span>COMPLETE HEALTH RECORDS</span><b>Too much</b><small>Broad medical history</small></div>
+        <div class="spectrum-center"><div>EmergencyDPI</div><span>Minimum necessary emergency data</span></div>
+        <div class="spectrum-side right"><span>STATIC EMERGENCY IDs</span><b>Too little control</b><small>Fast, but may expose information broadly</small></div>
+      </div>
+      <p class="positioning">EmergencyDPI is not another medical-record platform. It is an emergency-focused access layer built around <strong>minimum necessary data, consent, time-limited access and auditability.</strong></p>
+    </section>
+
+    <section class="section how" id="how">
+      <div class="section-heading">
+        <div class="eyebrow">03 • THE WORKFLOW</div>
+        <h2>From emergency QR to <em>controlled access.</em></h2>
+        <p>The QR identifies a secure profile reference. It does not directly reveal medical information.</p>
+      </div>
+      <div class="flow">
+        <div class="flow-line"></div>
+        <div class="flow-step"><span>01</span><div class="flow-icon">👤</div><h3>Patient</h3><p>Creates an emergency profile.</p></div>
+        <div class="flow-step"><span>02</span><div class="flow-icon">▦</div><h3>Secure QR</h3><p>References the profile securely.</p></div>
+        <div class="flow-step"><span>03</span><div class="flow-icon">🏥</div><h3>Hospital</h3><p>Scans and verifies requester.</p></div>
+        <div class="flow-step"><span>04</span><div class="flow-icon">✓</div><h3>Consent</h3><p>Patient / authorized person approves.</p></div>
+        <div class="flow-step"><span>05</span><div class="flow-icon">🛡</div><h3>Minimum data</h3><p>Only approved fields are released.</p></div>
+        <div class="flow-step"><span>06</span><div class="flow-icon">⌁</div><h3>Audit log</h3><p>Who, what, why, when and duration.</p></div>
+      </div>
+      <div class="core-rule"><span>CORE RULE</span><b>Scan</b> → <b>Verify</b> → <b>Request</b> → <b>Consent</b> → <b>Minimum data</b> → <b>Audit</b></div>
+    </section>
+
+    <section class="section features" id="security">
+      <div class="section-heading">
+        <div class="eyebrow">04 • BUILT-IN CONTROLS</div>
+        <h2>Privacy is part of the <em>workflow.</em></h2>
+      </div>
+      <div class="feature-grid">
+        <article><div class="feature-icon">🔐</div><h3>Consent-controlled access</h3><p>Patient or authorized person controls sharing wherever the emergency protocol permits.</p></article>
+        <article><div class="feature-icon">🎯</div><h3>Minimum necessary data</h3><p>Providers request specific emergency fields instead of receiving an unrestricted record.</p></article>
+        <article><div class="feature-icon">⏱</div><h3>Time-limited access</h3><p>Approved access has a defined duration and can expire automatically.</p></article>
+        <article><div class="feature-icon">✓</div><h3>Verified requester</h3><p>Hospital/provider identity is checked before information is released.</p></article>
+        <article><div class="feature-icon">📋</div><h3>Audit trail</h3><p>Every access can record who accessed what, why, when and for how long.</p></article>
+        <article><div class="feature-icon">🌐</div><h3>Portable profile</h3><p>Designed as an interoperable layer for participating healthcare providers.</p></article>
+      </div>
+    </section>
+
+    <section class="demo-section" id="demo">
+      <div class="demo-header">
+        <div><div class="eyebrow">05 • LIVE PROTOTYPE</div><h2>Try the emergency access flow.</h2><p>This demo uses fictional data to show the intended MVP experience.</p></div>
+        <button class="reset-btn" onclick="resetDemo()">↻ Reset demo</button>
+      </div>
+
+      <div class="demo-shell">
+        <aside class="demo-nav">
+          <div class="demo-user"><div class="avatar small">AS</div><div><b>Alex Sharma</b><small>Patient profile</small></div></div>
+          <button class="tab active" data-tab="patient" onclick="setTab('patient')">◉ Patient</button>
+          <button class="tab" data-tab="hospital" onclick="setTab('hospital')">🏥 Hospital</button>
+          <button class="tab" data-tab="consent" onclick="setTab('consent')">🔐 Consent</button>
+          <button class="tab" data-tab="record" onclick="setTab('record')">▤ Access record</button>
+          <div class="demo-nav-foot"><span class="dot"></span> Prototype environment<br><small>No real patient data</small></div>
+        </aside>
+
+        <div class="demo-content">
+          <!-- PATIENT -->
+          <div class="demo-view active" id="view-patient">
+            <div class="view-top"><div><span class="view-kicker">PATIENT DASHBOARD</span><h3>Emergency Profile</h3><p>Control what a verified healthcare provider can request.</p></div><span class="profile-pill">● PROFILE ACTIVE</span></div>
+            <div class="patient-layout">
+              <div class="data-card">
+                <div class="data-card-head"><b>Critical information</b><span>Private by default</span></div>
+                <label class="data-item"><span><i>🩸</i><b>Blood group</b><small>Emergency identifier</small></span><strong>B+</strong></label>
+                <label class="data-item"><span><i>⚠</i><b>Critical allergies</b><small>High-priority alerts</small></span><strong>Penicillin</strong></label>
+                <label class="data-item"><span><i>💊</i><b>Current medications</b><small>Active medication list</small></span><strong>2 active</strong></label>
+                <label class="data-item"><span><i>🏥</i><b>Medical conditions</b><small>Critical conditions only</small></span><strong>2 conditions</strong></label>
+                <label class="data-item"><span><i>📞</i><b>Emergency contact</b><small>Authorized contact</small></span><strong>Available</strong></label>
+              </div>
+              <div class="qr-panel">
+                <div class="secure-label">SECURE PROFILE REFERENCE</div>
+                <div class="big-qr" id="demoQr"><div class="qr-fake large"></div></div>
+                <b>Emergency QR</b>
+                <p>QR contains a secure profile reference, not the patient's medical information.</p>
+                <button class="btn btn-primary full" onclick="showToast('QR generated for the demo profile.')">Generate / Refresh QR</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- HOSPITAL -->
+          <div class="demo-view" id="view-hospital">
+            <div class="view-top"><div><span class="view-kicker">HOSPITAL PORTAL</span><h3>Emergency Access Request</h3><p>Choose only the information required for treatment.</p></div><span class="verified-pill">✓ VERIFIED REQUESTER</span></div>
+            <div class="hospital-card">
+              <div class="hospital-identity"><div class="hospital-logo">+</div><div><b>City General Hospital</b><small>Emergency Department • Verified provider</small></div><span>VERIFIED</span></div>
+              <div class="request-grid">
+                <div>
+                  <div class="field-label">Request purpose</div>
+                  <select id="purpose"><option>Emergency treatment</option><option>Medication verification</option><option>Allergy verification</option></select>
+                </div>
+                <div>
+                  <div class="field-label">Access duration</div>
+                  <select id="duration"><option value="30">30 minutes</option><option value="15">15 minutes</option><option value="60">60 minutes</option></select>
+                </div>
+              </div>
+              <div class="field-label">Requested information</div>
+              <div class="check-grid">
+                <label><input type="checkbox" checked data-field="Blood group"><span>🩸</span> Blood group</label>
+                <label><input type="checkbox" checked data-field="Critical allergies"><span>⚠</span> Critical allergies</label>
+                <label><input type="checkbox" checked data-field="Current medications"><span>💊</span> Current medications</label>
+                <label><input type="checkbox" data-field="Medical conditions"><span>🏥</span> Medical conditions</label>
+                <label><input type="checkbox" data-field="Emergency contact"><span>📞</span> Emergency contact</label>
+              </div>
+              <div class="request-warning">🔒 The selected fields will be visible only after consent is granted.</div>
+              <button class="btn btn-primary full" onclick="sendAccessRequest()">Request patient consent →</button>
+            </div>
+          </div>
+
+          <!-- CONSENT -->
+          <div class="demo-view" id="view-consent">
+            <div class="view-top"><div><span class="view-kicker">CONSENT MANAGER</span><h3>Access Request</h3><p>Review exactly what the verified provider is asking to see.</p></div><span class="pending-pill">● PENDING</span></div>
+            <div class="consent-card">
+              <div class="consent-hospital"><div class="hospital-logo">+</div><div><b>City General Hospital</b><small>Emergency Department</small></div><span>✓ Verified</span></div>
+              <div class="purpose-box"><small>PURPOSE</small><b id="consentPurpose">Emergency treatment</b></div>
+              <div class="requested-title">Requested information <span id="requestCount">3 fields</span></div>
+              <div class="requested-list" id="requestedList">
+                <div>🩸 <span>Blood group</span><b>Requested</b></div>
+                <div>⚠ <span>Critical allergies</span><b>Requested</b></div>
+                <div>💊 <span>Current medications</span><b>Requested</b></div>
+              </div>
+              <div class="expiry"><span>⏱</span><div><b>Access duration: <span id="consentDuration">30 minutes</span></b><small>Access automatically expires after this period.</small></div></div>
+              <div class="consent-actions"><button class="btn btn-danger" onclick="denyAccess()">Deny</button><button class="btn btn-primary" onclick="allowAccess()">Allow access</button></div>
+            </div>
+          </div>
+
+          <!-- RECORD -->
+          <div class="demo-view" id="view-record">
+            <div class="view-top"><div><span class="view-kicker">AUDIT TRAIL</span><h3>Access Record</h3><p>A transparent record of emergency data access.</p></div><span class="active-access" id="accessStatus">● ACCESS ACTIVE</span></div>
+            <div class="record-card">
+              <div class="active-access-banner"><div class="timer-ring">30</div><div><b>Temporary access granted</b><p id="recordSummary">City General Hospital can view 3 approved fields.</p></div><span id="timerLabel">29:59</span></div>
+              <div class="record-row"><span>Requester</span><b>City General Hospital</b></div>
+              <div class="record-row"><span>Purpose</span><b id="recordPurpose">Emergency treatment</b></div>
+              <div class="record-row"><span>Approved data</span><b id="recordFields">Blood group, allergies, medications</b></div>
+              <div class="record-row"><span>Access status</span><b class="green">Verified & active</b></div>
+              <div class="record-note">✓ Every access event is designed to be recorded for accountability.</div>
+              <button class="btn btn-ghost full" onclick="setTab('patient')">Return to patient profile</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="unconscious">
+      <div class="unconscious-copy"><div class="eyebrow">06 • UNCONSCIOUS PATIENT</div><h2>Emergency protocols can handle the moment when the patient <em>cannot.</em></h2><p>Hospital policy and applicable regulations can define emergency-access rules for situations where a patient cannot provide consent.</p></div>
+      <div class="unconscious-flow">
+        <span>Patient unconscious</span><i>↓</i><span>Verified hospital request</span><i>↓</i><span>Emergency protocol</span><i>↓</i><span>Limited critical information</span><i>↓</i><span>Access recorded</span>
+      </div>
+    </section>
+
+    <section class="section architecture">
+      <div class="section-heading">
+        <div class="eyebrow">07 • TECHNICAL FEASIBILITY</div>
+        <h2>A practical architecture for an <em>interoperable layer.</em></h2>
+      </div>
+      <div class="architecture-grid">
+        <div class="arch-box top">PATIENT APP / WEB</div><div class="arrow">↓</div>
+        <div class="arch-box api">REST API</div><div class="arrow">↓</div>
+        <div class="arch-row"><div class="arch-box">Authentication</div><div class="arch-box">Consent</div><div class="arch-box">Authorization</div></div>
+        <div class="arrow">↓</div>
+        <div class="arch-box backend">BACKEND</div><div class="arrow">↓</div>
+        <div class="arch-row"><div class="arch-box">Encrypted PostgreSQL</div><div class="arch-box">Audit Log Service</div></div>
+        <div class="arch-box hospital">HOSPITAL PORTAL ← QR SCAN</div>
+      </div>
+      <div class="stack-row"><span>Frontend: HTML / CSS / JS</span><span>Backend: FastAPI / Node.js</span><span>Database: PostgreSQL</span><span>Auth: OTP + RBAC</span><span>Security: HTTPS + short-lived tokens</span></div>
+    </section>
+
+    <section class="section dpi">
+      <div class="section-heading compact"><div class="eyebrow">08 • WHY DPI</div><h2>Designed as a <em>reusable public digital layer.</em></h2></div>
+      <div class="dpi-table">
+        <div class="dpi-head"><span>DPI principle</span><span>EmergencyDPI</span></div>
+        <div><span>Identity</span><b>Verified patient / requester identity</b></div>
+        <div><span>Authentication</span><b>Secure login and request verification</b></div>
+        <div><span>Consent</span><b>User-controlled data sharing</b></div>
+        <div><span>Data exchange</span><b>Structured emergency information</b></div>
+        <div><span>Interoperability</span><b>Designed for multiple healthcare providers</b></div>
+        <div><span>Security</span><b>Encryption + controlled access</b></div>
+        <div><span>Auditability</span><b>Every access recorded</b></div>
+      </div>
+    </section>
+
+    <section class="impact">
+      <div class="impact-inner">
+        <div><div class="eyebrow">09 • FUTURE PATH</div><h2>From one profile to <em>interoperable infrastructure.</em></h2></div>
+        <div class="scale"><span>Individual</span><b>→</b><span>Hospital</span><b>→</b><span>Multiple hospitals</span><b>→</b><span>Ambulance / emergency services</span><b>→</b><span>Healthcare networks</span></div>
+        <div class="future-tags"><span>Potential ABDM / ABHA integration</span><span>Ambulance providers</span><span>Wearables</span><span>Public digital services</span></div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <div class="eyebrow">EMERGENCYDPI</div>
+      <h2>From static emergency information<br>to <em>controlled emergency access.</em></h2>
+      <div class="principles"><span>Minimum data.</span><span>Verified access.</span><span>Patient consent.</span><span>Time-limited sharing.</span><span>Every access accountable.</span></div>
+      <button class="btn btn-primary" onclick="showPatient()">Explore the prototype →</button>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand"><span class="brand-mark">✚</span> Emergency<span>DPI</span></div>
+    <p>Hackathon prototype • Fictional data • Not a medical service</p>
+  </footer>
+
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal()">×</button>
+      <div class="modal-icon">🏥</div>
+      <div class="eyebrow">HOSPITAL PORTAL</div>
+      <h2>Simulate an emergency access request.</h2>
+      <p>You'll enter the same controlled workflow used in the live prototype below.</p>
+      <button class="btn btn-primary full" onclick="closeModal(); setTab('hospital'); document.getElementById('demo').scrollIntoView({behavior:'smooth'});">Open Hospital Portal →</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+  <script src="script.js"></script>
+<script>
+let requestedFields = ["Blood group","Critical allergies","Current medications"];
+let requestPurpose = "Emergency treatment";
+let requestDuration = 30;
+let accessTimer = null;
+let remainingSeconds = 1800;
+
+function showToast(message){
+  const toast=document.getElementById("toast");
+  toast.textContent=message;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"),2600);
+}
+
+function showPatient(){
+  setTab("patient");
+  document.getElementById("demo").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function openHospital(){
+  document.getElementById("modal").classList.add("show");
+}
+
+function closeModal(){
+  document.getElementById("modal").classList.remove("show");
+}
+
+function toggleMenu(){
+  const nav=document.querySelector(".navbar nav");
+  const visible=getComputedStyle(nav).display!=="none";
+  if(visible) nav.style.display="none";
+  else{
+    nav.style.display="flex";
+    nav.style.position="absolute";
+    nav.style.top="76px";
+    nav.style.left="0";
+    nav.style.right="0";
+    nav.style.padding="20px";
+    nav.style.background="#091725";
+    nav.style.flexDirection="column";
+    nav.style.alignItems="stretch";
+  }
+}
+
+function setTab(tab){
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  document.querySelectorAll(".demo-view").forEach(v=>v.classList.remove("active"));
+  const target=document.getElementById("view-"+tab);
+  if(target) target.classList.add("active");
+  document.getElementById("demo").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+function getSelectedFields(){
+  return [...document.querySelectorAll('.check-grid input:checked')].map(x=>x.dataset.field);
+}
+
+function sendAccessRequest(){
+  requestedFields=getSelectedFields();
+  requestPurpose=document.getElementById("purpose").value;
+  requestDuration=parseInt(document.getElementById("duration").value,10);
+
+  if(requestedFields.length===0){
+    showToast("Select at least one emergency field.");
+    return;
+  }
+
+  document.getElementById("consentPurpose").textContent=requestPurpose;
+  document.getElementById("consentDuration").textContent=requestDuration+" minutes";
+  document.getElementById("requestCount").textContent=requestedFields.length+" field"+(requestedFields.length===1?"":"s");
+
+  const list=document.getElementById("requestedList");
+  const icons={"Blood group":"🩸","Critical allergies":"⚠","Current medications":"💊","Medical conditions":"🏥","Emergency contact":"📞"};
+  list.innerHTML=requestedFields.map(field=>`<div>${icons[field]||"•"} <span>${field}</span><b>Requested</b></div>`).join("");
+
+  setTab("consent");
+  showToast("Access request sent to patient.");
+}
+
+function allowAccess(){
+  remainingSeconds=requestDuration*60;
+  document.getElementById("recordPurpose").textContent=requestPurpose;
+  document.getElementById("recordFields").textContent=requestedFields.join(", ");
+  document.getElementById("recordSummary").textContent=`City General Hospital can view ${requestedFields.length} approved field${requestedFields.length===1?"":"s"}.`;
+  document.getElementById("timerLabel").textContent=formatTime(remainingSeconds);
+  document.querySelector(".timer-ring").textContent=requestDuration;
+
+  setTab("record");
+  startTimer();
+  showToast("Consent granted. Temporary access is now active.");
+}
+
+function denyAccess(){
+  document.querySelector(".pending-pill").textContent="● DENIED";
+  document.querySelector(".pending-pill").style.color="#ff8e9b";
+  document.querySelector(".pending-pill").style.background="rgba(255,111,126,.08)";
+  showToast("Access request denied. No information was released.");
+}
+
+function startTimer(){
+  clearInterval(accessTimer);
+  document.getElementById("accessStatus").textContent="● ACCESS ACTIVE";
+  document.getElementById("accessStatus").style.color="var(--green)";
+  accessTimer=setInterval(()=>{
+    remainingSeconds--;
+    if(remainingSeconds<=0){
+      clearInterval(accessTimer);
+      remainingSeconds=0;
+      document.getElementById("accessStatus").textContent="● ACCESS EXPIRED";
+      document.getElementById("accessStatus").style.color="#ff9da8";
+      document.getElementById("timerLabel").textContent="00:00";
+      showToast("Temporary access has expired.");
+      return;
+    }
+    document.getElementById("timerLabel").textContent=formatTime(remainingSeconds);
+    const ring=document.querySelector(".timer-ring");
+    ring.textContent=Math.ceil(remainingSeconds/60);
+  },1000);
+}
+
+function formatTime(sec){
+  const m=Math.floor(sec/60).toString().padStart(2,"0");
+  const s=(sec%60).toString().padStart(2,"0");
+  return `${m}:${s}`;
+}
+
+function resetDemo(){
+  clearInterval(accessTimer);
+  requestedFields=["Blood group","Critical allergies","Current medications"];
+  requestPurpose="Emergency treatment";
+  requestDuration=30;
+  document.querySelectorAll(".check-grid input").forEach((x,i)=>x.checked=i<3);
+  document.getElementById("purpose").value="Emergency treatment";
+  document.getElementById("duration").value="30";
+  document.querySelector(".pending-pill").textContent="● PENDING";
+  document.querySelector(".pending-pill").style.color="#ffca78";
+  document.querySelector(".pending-pill").style.background="rgba(255,190,89,.08)";
+  setTab("patient");
+  showToast("Prototype reset.");
+}
+
+/* Optional real QR generation.
+   If the QRCode.js CDN is reachable, replace the visual placeholder with a real QR. */
+window.addEventListener("load",()=>{
+  try{
+    if(window.QRCode){
+      ["heroQr","demoQr"].forEach(id=>{
+        const el=document.getElementById(id);
+        if(!el) return;
+        el.innerHTML="";
+        new QRCode(el,{
+          text:"https://example.org/emergency-profile/DEMO-7F2A9C",
+          width:id==="demoQr"?150:56,
+          height:id==="demoQr"?150:56,
+          colorDark:"#0b1620",
+          colorLight:"#ffffff",
+          correctLevel:QRCode.CorrectLevel.M
+        });
+      });
+    }
+  }catch(e){/* fallback visual QR remains in place */}
+});
+
+document.getElementById("modal").addEventListener("click",e=>{
+  if(e.target.id==="modal") closeModal();
+});
+
+</script>
+</body>
+</html>
